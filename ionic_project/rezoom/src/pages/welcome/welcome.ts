@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-scanner';
 
 /**
  * The Welcome Page is a splash page that quickly describes the app,
@@ -15,7 +15,23 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 })
 export class WelcomePage {
 
-  constructor(public navCtrl: NavController,private barcodeScanner: BarcodeScanner) { }
+	data={
+
+	};
+	option: BarcodeScannerOptions;	
+  constructor(public navCtrl: NavController,public barcodeScanner: BarcodeScanner) { }
+
+  scan(){
+  	this.option = {
+  		prompt: "Scannez votre QR Code"
+  	}
+  	this.barcodeScanner.scan(this.option).then(barcodeData => {
+		 console.log('Barcode data', barcodeData);
+		 this.data = barcodeData;
+		}).catch(err => {
+		    console.log('Error', err);
+		});
+  }
 
   login() {
     this.navCtrl.push('LoginPage');
